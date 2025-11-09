@@ -1,6 +1,10 @@
-# Flappy Utkarsh
-
-A modern, feature-rich Flappy Bird clone featuring Utkarsh with beautiful graphics, smooth animations, and professional game mechanics.
+<div align="center">
+  <img src="assets/images/utkarsh.png" alt="Flappy Utkarsh Logo" width="200"/>
+  
+  # Flappy Utkarsh
+  
+  A modern, feature-rich Flappy Bird clone featuring Utkarsh with beautiful graphics, smooth animations, and professional game mechanics.
+</div>
 
 ## Features
 
