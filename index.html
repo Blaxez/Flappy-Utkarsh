@@ -331,50 +331,193 @@
       transform: translateY(0) scale(0.97);
     }
     
-    /* Settings Menu Content - Revamped */
+    /* Settings Menu Content - Clean Design */
     #settingsMenuContent {
       text-align: left;
-      max-width: min(92%, 480px);
+      max-width: min(92%, 520px);
       width: 100%;
       margin: auto;
-      padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+      padding: 2rem;
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: clamp(1rem, 2.5vw, 1.5rem);
+      max-height: 85vh;
+      overflow: hidden;
     }
     
     #settingsMenuContent h1 {
-      padding-right: clamp(2.5rem, 10vw, 4rem);
-      margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      margin-bottom: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .settings-body {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 0.5rem;
+      flex: 1;
+      max-height: calc(85vh - 180px);
+    }
+    
+    .settings-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .settings-body::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    .settings-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+    
+    .settings-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .settings-footer {
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .settings-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .setting-button {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .setting-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .setting-button:hover::before {
+      transform: translateX(0);
+    }
+    
+    .setting-button:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .setting-button span {
+      position: relative;
+      z-index: 1;
     }
     
     .settings-section {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.5rem, 1.5vw, 0.75rem);
-      padding: clamp(0.75rem, 2vw, 1.25rem);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: clamp(0.75rem, 2vw, 1rem);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 1.5rem;
+      padding: 0;
+    }
+    
+    .settings-section:last-child {
+      margin-bottom: 0;
     }
     
     .settings-section-title {
-      font-size: clamp(0.9rem, 2.2vw, 1.1rem);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.95);
-      margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
-      letter-spacing: 0.02em;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
-      font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-      opacity: 0.7;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
     }
     
     .settings-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .settings-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .settings-group label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+    
+    .volume-control {
+      margin-bottom: 1.25rem;
+    }
+    
+    .volume-control:last-child {
+      margin-bottom: 0;
+    }
+    
+    .volume-label-row {
       display: flex;
-      flex-direction: column;
-      gap: clamp(0.4rem, 1.2vw, 0.6rem);
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    
+    .volume-control label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    .volume-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      min-width: 3rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .volume-control input[type="range"] {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .volume-control input[type="range"]:hover {
+      background: rgba(255, 255, 255, 0.15);
     }
     
     #settingsMenu label {
@@ -386,305 +529,37 @@
       font-weight: 500;
       letter-spacing: 0.01em;
       margin: 0;
-    }
-    
-    #settingsMenu select {
-      padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
-      border-radius: clamp(0.5rem, 1.5vw, 0.75rem);
-      border: 1px solid var(--glass-border);
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      width: 100%;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--primary);
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: var(--blur-sm);
-      -webkit-backdrop-filter: var(--blur-sm);
-      cursor: pointer;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    #settingsMenu select:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-    }
-    
-    #settingsMenu select:focus {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.4);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1), inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .volume-control {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.5rem, 1.5vw, 0.75rem);
-    }
-    
-    .volume-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .volume-value {
-      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 600;
-      min-width: 3ch;
-      text-align: right;
-    }
-    
-    #settingsMenu input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      outline: none;
-      border-radius: 4px;
-      padding: 0;
-      width: 100%;
       cursor: pointer;
       position: relative;
       box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     
-    #settingsMenu input[type="range"]::-webkit-slider-thumb {
+    .volume-control input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
-      background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.8));
       border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      border: 2px solid rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease;
     }
     
-    #settingsMenu input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-      cursor: pointer;
+    .volume-control input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.8));
       border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2);
-      border: 2px solid rgba(255, 255, 255, 0.9);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: none;
+      transition: all 0.2s ease;
     }
     
     #settingsMenu input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.15);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.3);
-    }
-    
-    #settingsMenu input[type="range"]::-moz-range-thumb:hover {
-      transform: scale(1.15);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.3);
-    }
-    
-    #settingsMenu input[type="range"]::-webkit-slider-thumb:active {
-      transform: scale(1.05);
-    }
-    
-    #settingsMenu input[type="range"]::-moz-range-thumb:active {
-      transform: scale(1.05);
-    }
-    
-    .settings-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.5rem, 1.5vw, 0.75rem);
-      margin-top: clamp(0.5rem, 1.5vw, 1rem);
-    }
-    
-    #settingsMenu button.setting-button {
-      padding: clamp(0.75rem, 2vw, 1rem);
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-sm);
-      -webkit-backdrop-filter: var(--blur-sm);
-      width: 100%;
-      font-weight: 500;
-    }
-    
-    .close-button {
-      position: absolute;
-      top: clamp(0.5rem, 1.5vw, 0.75rem);
-      right: clamp(0.5rem, 1.5vw, 0.75rem);
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: var(--blur-sm);
-      -webkit-backdrop-filter: var(--blur-sm);
-      border: 1px solid var(--glass-border);
-      color: var(--primary);
-      width: clamp(28px, 7vw, 36px);
-      height: clamp(28px, 7vw, 36px);
-      border-radius: 50%;
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      line-height: 1;
-      padding: 0;
-      z-index: 10;
-      flex-shrink: 0;
-    }
-    
-    .close-button:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: rotate(90deg) scale(1.1);
-    }
-    
-    /* Loading Screen */
-    #loadingScreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #2a2a2a;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      color: var(--primary);
-      font-size: clamp(1rem, 3vw, 1.5rem);
-    }
-    
-    .loader {
-      width: clamp(60px, 15vw, 80px);
-      height: clamp(60px, 15vw, 80px);
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      margin-bottom: clamp(1rem, 3vw, 1.5rem);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Special Notifications */
-    #newHighScore,
-    #newAllTimeHighScore {
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2.5vw, 1.5rem);
-      border-radius: clamp(0.5rem, 1.5vw, 0.75rem);
-      margin: clamp(0.5rem, 1.5vw, 0.75rem) 0;
-      font-weight: 600;
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.02); }
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .score-panel {
-        gap: clamp(0.4rem, 1.5vw, 0.75rem);
-      }
-      
-      #featurePanel {
-        gap: clamp(0.3rem, 1vw, 0.5rem);
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .score-panel {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .collectibles-container {
-        justify-content: space-between;
-      }
-      
-      .collectible-item {
-        flex: 1;
-        justify-content: center;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .menu-content {
-        padding: clamp(1.25rem, 4vw, 2rem);
-      }
-      
-      #featurePanel {
-        max-width: 100%;
-        left: clamp(0.75rem, 2vw, 1.5rem);
-        right: clamp(0.75rem, 2vw, 1.5rem);
-      }
-    }
-    
-    @media (max-width: 360px) {
-      .score-panel {
-        padding: clamp(0.5rem, 1.5vw, 0.75rem);
-      }
-      
-      .collectibles-container {
-        gap: clamp(0.3rem, 1vw, 0.5rem);
-      }
-      
-      #featurePanel button {
-        flex: 1;
-        min-width: 0;
-      }
-    }
-    
-    /* Micro-interactions */
-    @media (hover: hover) {
-      .score-container:hover,
-      .collectible-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-      }
-    }
-    
-    .score-container,
-    .collectible-item {
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-    
-    /* High contrast mode support */
-    @media (prefers-contrast: high) {
-      :root {
-        --glass-bg: rgba(255, 255, 255, 0.15);
-        --glass-border: rgba(255, 255, 255, 0.35);
-      }
-    }
-    
-    /* Social Links */
-    .social-links {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .social-link {
@@ -702,17 +577,40 @@
       transition: all 0.3s ease;
     }
     
-    .social-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    
     .social-link svg {
       width: 20px;
       height: 20px;
       fill: currentColor;
+    }
+    
+    .settings-group select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0.75rem;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+    
+    .settings-group select:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .settings-group select:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
@@ -802,77 +700,85 @@
   
   <div id="settingsMenu" class="menu">
     <div class="menu-content" id="settingsMenuContent">
-      <button class="close-button" onclick="hideSettingsMenu()">×</button>
-      <h1>Settings</h1>
+      <!-- Header -->
+      <div class="settings-header">
+        <h1>Settings</h1>
+        <button class="close-button" onclick="hideSettingsMenu()">×</button>
+      </div>
       
-      <!-- Appearance Section -->
-      <div class="settings-section">
-        <div class="settings-section-title">Appearance</div>
-        <div class="settings-group">
-          <label for="birdSkinSelect">Bird Character</label>
-          <select id="birdSkinSelect" onchange="changeBirdSkin(this.value)">
-            <option value="utkarsh.png">Utkarsh</option>
-          </select>
+      <!-- Scrollable Body -->
+      <div class="settings-body">
+        <!-- Appearance Section -->
+        <div class="settings-section">
+          <div class="settings-section-title">Appearance</div>
+          <div class="settings-group">
+            <label for="birdSkinSelect">Bird Character</label>
+            <select id="birdSkinSelect" onchange="changeBirdSkin(this.value)">
+              <option value="utkarsh.png">Utkarsh</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <label for="backgroundSelect">Background</label>
+            <select id="backgroundSelect" onchange="changeBackgroundTheme(this.value)">
+              <option value="city_background.png">City</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <label for="pipeSkinSelect">Pipe Style</label>
+            <select id="pipeSkinSelect" onchange="changePipeSkin(this.value)">
+              <option value="green">Green</option>
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+            </select>
+          </div>
         </div>
-        <div class="settings-group">
-          <label for="backgroundSelect">Background</label>
-          <select id="backgroundSelect" onchange="changeBackgroundTheme(this.value)">
-            <option value="city_background.png">City</option>
-          </select>
+        
+        <!-- Gameplay Section -->
+        <div class="settings-section">
+          <div class="settings-section-title">Gameplay</div>
+          <div class="settings-group">
+            <label for="difficultySelect">Difficulty</label>
+            <select id="difficultySelect" onchange="changeDifficulty(this.value)">
+              <option value="easy">Easy</option>
+              <option value="normal">Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
         </div>
-        <div class="settings-group">
-          <label for="pipeSkinSelect">Pipe Style</label>
-          <select id="pipeSkinSelect" onchange="changePipeSkin(this.value)">
-            <option value="green">Green</option>
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-          </select>
+        
+        <!-- Audio Section -->
+        <div class="settings-section">
+          <div class="settings-section-title">Audio</div>
+          <div class="volume-control">
+            <div class="volume-label-row">
+              <label for="masterVolume">Master Volume</label>
+              <span class="volume-value" id="masterVolumeValue">100%</span>
+            </div>
+            <input type="range" id="masterVolume" min="0" max="1" value="1" step="0.05">
+          </div>
+          <div class="volume-control">
+            <div class="volume-label-row">
+              <label for="soundEffectsVolume">Sound Effects</label>
+              <span class="volume-value" id="soundEffectsVolumeValue">70%</span>
+            </div>
+            <input type="range" id="soundEffectsVolume" min="0" max="1" value="0.7" step="0.05">
+          </div>
+          <div class="volume-control">
+            <div class="volume-label-row">
+              <label for="musicVolume">Music</label>
+              <span class="volume-value" id="musicVolumeValue">30%</span>
+            </div>
+            <input type="range" id="musicVolume" min="0" max="1" value="0.3" step="0.05">
+          </div>
         </div>
       </div>
       
-      <!-- Gameplay Section -->
-      <div class="settings-section">
-        <div class="settings-section-title">Gameplay</div>
-        <div class="settings-group">
-          <label for="difficultySelect">Difficulty</label>
-          <select id="difficultySelect" onchange="changeDifficulty(this.value)">
-            <option value="easy">Easy</option>
-            <option value="normal">Normal</option>
-            <option value="hard">Hard</option>
-          </select>
+      <!-- Footer -->
+      <div class="settings-footer">
+        <div class="settings-buttons">
+          <button onclick="resetAllTimeHighScore()" class="setting-button"><span>Reset Records</span></button>
+          <button onclick="hideSettingsMenu()" class="setting-button"><span>Close</span></button>
         </div>
-      </div>
-      
-      <!-- Audio Section -->
-      <div class="settings-section">
-        <div class="settings-section-title">Audio</div>
-        <div class="volume-control">
-          <div class="volume-label-row">
-            <label for="masterVolume">Master Volume</label>
-            <span class="volume-value" id="masterVolumeValue">100%</span>
-          </div>
-          <input type="range" id="masterVolume" min="0" max="1" value="1" step="0.05">
-        </div>
-        <div class="volume-control">
-          <div class="volume-label-row">
-            <label for="soundEffectsVolume">Sound Effects</label>
-            <span class="volume-value" id="soundEffectsVolumeValue">70%</span>
-          </div>
-          <input type="range" id="soundEffectsVolume" min="0" max="1" value="0.7" step="0.05">
-        </div>
-        <div class="volume-control">
-          <div class="volume-label-row">
-            <label for="musicVolume">Music</label>
-            <span class="volume-value" id="musicVolumeValue">30%</span>
-          </div>
-          <input type="range" id="musicVolume" min="0" max="1" value="0.3" step="0.05">
-        </div>
-      </div>
-      
-      <!-- Actions -->
-      <div class="settings-buttons">
-        <button onclick="resetAllTimeHighScore()" class="setting-button">Reset All Records</button>
-        <button onclick="hideSettingsMenu()" class="setting-button">Close Settings</button>
       </div>
     </div>
   </div>
