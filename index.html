@@ -3,24 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flippy Bird Enhanced</title>
+  <title>Flappy Utkarsh - Ultra Edition</title>
   
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { overflow: hidden; touch-action: none; background: #87CEEB; font-family: 'Nunito Sans', sans-serif; }
-    #gameCanvas { display: block; width: 100%; height: 100vh; background: #4ec0ca; }
-    .menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; }
-    .menu-content { background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 1rem; box-shadow: 0 8px 16px rgba(0,0,0,0.3); text-align: center; max-width: 90%; }
-    .menu h1 { font-size: 2.5rem; margin-bottom: 1rem; color: #007bff; text-shadow: 2px 2px 3px rgba(0,0,0,0.1); }
-    .menu p { font-size: 1.2rem; margin-bottom: 1.5rem; color: #555; }
-    .menu button { background: #007bff; color: #fff; border: none; padding: 0.75rem 1.5rem; font-size: 1.1rem; margin: 0.5rem; cursor: pointer; border-radius: 0.5rem; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    .menu button:hover { background: #0056b3; transform: scale(1.05); }
-    .menu button:active { transform: scale(0.98); }
-    #gameOverMenu, #settingsMenu, #pauseMenu { display: none; }
+    :root {
+      --primary: #ffffff;
+      --secondary: #f5f5f5;
+      --accent: #e0e0e0;
+      --dark: #1a1a1a;
+      --mid-dark: #2a2a2a;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.2);
+      --blur-sm: blur(8px);
+      --blur-md: blur(16px);
+      --blur-lg: blur(24px);
+    }
     
-    /* Improved score panel */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      overflow: hidden;
+      touch-action: none;
+      background: #2a2a2a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Glassmorphic Menu System */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: var(--blur-lg);
+      -webkit-backdrop-filter: var(--blur-lg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .menu-content {
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-md);
+      -webkit-backdrop-filter: var(--blur-md);
+      border: 1px solid var(--glass-border);
+      padding: clamp(1.5rem, 5vw, 3rem);
+      border-radius: clamp(1rem, 3vw, 2rem);
+      box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      text-align: center;
+      max-width: min(90%, 480px);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .menu-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    }
+    
+    .menu h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+      color: var(--primary);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    
+    .menu p {
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      margin-bottom: clamp(1rem, 3vw, 2rem);
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    
+    .menu button {
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-sm);
+      -webkit-backdrop-filter: var(--blur-sm);
+      color: var(--primary);
+      border: 1px solid var(--glass-border);
+      padding: clamp(0.6rem, 2vw, 0.875rem) clamp(1.5rem, 4vw, 2.5rem);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-weight: 500;
+      margin: clamp(0.3rem, 1vw, 0.5rem);
+      cursor: pointer;
+      border-radius: clamp(0.5rem, 2vw, 0.75rem);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.01em;
+    }
+    
+    .menu button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .menu button:hover::before {
+      left: 100%;
+    }
+    
+    .menu button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    .menu button:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    #gameOverMenu, #settingsMenu, #pauseMenu {
+      display: none;
+    }
+    
+    /* Ultra-Modern Score Panel */
     .score-panel {
       position: fixed;
       top: 0;
@@ -28,166 +196,484 @@
       width: 100%;
       display: flex;
       justify-content: space-between;
-      padding: 1rem;
-      z-index: 10;
+      align-items: flex-start;
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      z-index: 50;
+      gap: clamp(0.5rem, 2vw, 1rem);
     }
     
     .score-container {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: clamp(0.3rem, 1vw, 0.5rem);
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-md);
+      -webkit-backdrop-filter: var(--blur-md);
+      border: 1px solid var(--glass-border);
+      padding: clamp(0.75rem, 2vw, 1.25rem);
+      border-radius: clamp(0.75rem, 2vw, 1.25rem);
+      box-shadow: var(--shadow-md);
+      min-width: min-content;
     }
     
     .score-display {
-      font-family: 'Nunito Sans', sans-serif;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      font-family: 'Inter', sans-serif;
+      color: var(--primary);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
     }
     
-    #scoreDisplay { 
-      font-size: 1.75rem; 
+    #scoreDisplay {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
       font-weight: 700;
+      line-height: 1;
     }
     
-    #highScoreDisplay, #allTimeHighScoreDisplay { 
-      font-size: 1.1rem; 
-      opacity: 0.9;
+    #highScoreDisplay,
+    #allTimeHighScoreDisplay {
+      font-size: clamp(0.75rem, 2vw, 1rem);
+      opacity: 0.85;
+      font-weight: 500;
     }
     
-    #allTimeHighScoreDisplay { 
-      color: gold; 
+    #allTimeHighScoreDisplay {
+      color: #fff;
+      position: relative;
+      padding-left: 1.2em;
+    }
+    
+    #allTimeHighScoreDisplay::before {
+      content: '★';
+      position: absolute;
+      left: 0;
+      color: #ffd700;
+      font-size: 1em;
+      filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
     }
     
     .collectibles-container {
       display: flex;
-      gap: 1.5rem;
+      gap: clamp(0.5rem, 2vw, 1rem);
       align-items: center;
     }
     
-    #pipeScoreDisplay, #coinScoreDisplay {
-      font-size: 1.5rem;
+    .collectible-item {
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-md);
+      -webkit-backdrop-filter: var(--blur-md);
+      border: 1px solid var(--glass-border);
+      padding: clamp(0.5rem, 1.5vw, 0.875rem) clamp(0.75rem, 2vw, 1.25rem);
+      border-radius: clamp(0.625rem, 2vw, 1rem);
+      box-shadow: var(--shadow-md);
+      font-size: clamp(1rem, 3vw, 1.5rem);
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: clamp(0.3rem, 1vw, 0.5rem);
+      font-weight: 600;
+      color: var(--primary);
+      min-width: min-content;
     }
     
-    #coinScoreDisplay {
-      color: #FFD700;
+    .collectible-item::before {
+      font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
     
     #coinScoreDisplay::before {
-      content: "🪙";
+      content: '🪙';
     }
     
     #pipeScoreDisplay::before {
-      content: "🚪";
+      content: '🚪';
     }
     
-    /* Improved feature panel */
+    /* Feature Panel */
     #featurePanel {
       position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      z-index: 11;
+      bottom: clamp(0.75rem, 2vw, 1.5rem);
+      right: clamp(0.75rem, 2vw, 1.5rem);
+      z-index: 50;
       display: flex;
-      gap: 0.5rem;
+      gap: clamp(0.4rem, 1.5vw, 0.75rem);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: min(90%, 400px);
     }
     
     #featurePanel button {
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1rem;
-      font-size: 1rem;
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-md);
+      -webkit-backdrop-filter: var(--blur-md);
+      color: var(--primary);
+      border: 1px solid var(--glass-border);
+      padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.875rem, 2.5vw, 1.5rem);
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      font-weight: 500;
       cursor: pointer;
-      border-radius: 0.5rem;
-      transition: background 0.3s, transform 0.2s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: clamp(0.5rem, 1.5vw, 0.75rem);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-md);
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
     }
     
     #featurePanel button:hover {
-      background: rgba(0,0,0,0.8);
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
     
     #featurePanel button:active {
-      transform: scale(0.98);
+      transform: translateY(0) scale(0.97);
     }
     
-    #settingsMenuContent { text-align: left; max-width: 350px; width: 90%; margin: auto; }
-    #settingsMenu label { display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: #444; }
-    #settingsMenu select, #settingsMenu button.setting-button { padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.5rem; border: 1px solid #ddd; font-size: 1rem; width: 100%; background: #fff; color: #333; }
-    #settingsMenu button.setting-button { padding: 0.75rem; margin-top: 0.5rem; }
-    .close-button { position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; color: #333; font-size: 1.5rem; cursor: pointer; opacity: 0.7; transition: opacity 0.3s; }
-    .close-button:hover { opacity: 1; }
-    #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #87CEEB; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; color: #fff; font-size: 1.5rem; }
-    .loader { border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 80px; height: 80px; animation: spin 2s linear infinite; margin-bottom: 20px; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    /* Settings Menu Content - Revamped */
+    #settingsMenuContent {
+      text-align: left;
+      max-width: min(92%, 480px);
+      width: 100%;
+      margin: auto;
+      padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 2.5vw, 1.5rem);
+    }
     
-    /* Improved responsive design */
+    #settingsMenuContent h1 {
+      padding-right: clamp(2.5rem, 10vw, 4rem);
+      margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+    }
+    
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      padding: clamp(0.75rem, 2vw, 1.25rem);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: clamp(0.75rem, 2vw, 1rem);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .settings-section-title {
+      font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+      opacity: 0.7;
+    }
+    
+    .settings-group {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.4rem, 1.2vw, 0.6rem);
+    }
+    
+    #settingsMenu label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin: 0;
+    }
+    
+    #settingsMenu select {
+      padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+      border-radius: clamp(0.5rem, 1.5vw, 0.75rem);
+      border: 1px solid var(--glass-border);
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: var(--blur-sm);
+      -webkit-backdrop-filter: var(--blur-sm);
+      cursor: pointer;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    #settingsMenu select:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    #settingsMenu select:focus {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.4);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .volume-control {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+    }
+    
+    .volume-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .volume-value {
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+      min-width: 3ch;
+      text-align: right;
+    }
+    
+    #settingsMenu input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      border-radius: 4px;
+      padding: 0;
+      width: 100%;
+      cursor: pointer;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    #settingsMenu input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+    }
+    
+    #settingsMenu input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    #settingsMenu input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+    
+    #settingsMenu input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+    
+    #settingsMenu input[type="range"]::-webkit-slider-thumb:active {
+      transform: scale(1.05);
+    }
+    
+    #settingsMenu input[type="range"]::-moz-range-thumb:active {
+      transform: scale(1.05);
+    }
+    
+    .settings-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      margin-top: clamp(0.5rem, 1.5vw, 1rem);
+    }
+    
+    #settingsMenu button.setting-button {
+      padding: clamp(0.75rem, 2vw, 1rem);
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-sm);
+      -webkit-backdrop-filter: var(--blur-sm);
+      width: 100%;
+      font-weight: 500;
+    }
+    
+    .close-button {
+      position: absolute;
+      top: clamp(0.5rem, 1.5vw, 0.75rem);
+      right: clamp(0.5rem, 1.5vw, 0.75rem);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: var(--blur-sm);
+      -webkit-backdrop-filter: var(--blur-sm);
+      border: 1px solid var(--glass-border);
+      color: var(--primary);
+      width: clamp(28px, 7vw, 36px);
+      height: clamp(28px, 7vw, 36px);
+      border-radius: 50%;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      line-height: 1;
+      padding: 0;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    
+    .close-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(90deg) scale(1.1);
+    }
+    
+    /* Loading Screen */
+    #loadingScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      color: var(--primary);
+      font-size: clamp(1rem, 3vw, 1.5rem);
+    }
+    
+    .loader {
+      width: clamp(60px, 15vw, 80px);
+      height: clamp(60px, 15vw, 80px);
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Special Notifications */
+    #newHighScore,
+    #newAllTimeHighScore {
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2.5vw, 1.5rem);
+      border-radius: clamp(0.5rem, 1.5vw, 0.75rem);
+      margin: clamp(0.5rem, 1.5vw, 0.75rem) 0;
+      font-weight: 600;
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.02); }
+    }
+    
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .menu-content { padding: 1.5rem; }
-      .menu h1 { font-size: 2rem; }
-      .menu p { font-size: 1rem; }
-      .menu button { padding: 0.5rem 1rem; font-size: 1rem; }
-      .score-panel { padding: 0.5rem; }
-      #scoreDisplay { font-size: 1.4rem; }
-      #highScoreDisplay, #allTimeHighScoreDisplay { font-size: 0.9rem; }
-      #pipeScoreDisplay, #coinScoreDisplay { font-size: 1.2rem; }
-      #featurePanel button { font-size: 0.9rem; padding: 0.5rem 0.8rem; }
+      .score-panel {
+        gap: clamp(0.4rem, 1.5vw, 0.75rem);
+      }
+      
+      #featurePanel {
+        gap: clamp(0.3rem, 1vw, 0.5rem);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .score-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .collectibles-container {
+        justify-content: space-between;
+      }
+      
+      .collectible-item {
+        flex: 1;
+        justify-content: center;
+      }
     }
     
     @media (max-width: 480px) {
-      .menu-content { padding: 1rem; }
-      .menu h1 { font-size: 1.75rem; }
-      .menu p { font-size: 0.9rem; }
-      .menu button { padding: 0.4rem 0.7rem; font-size: 0.9rem; }
-      
-      .score-panel {
-        flex-direction: column;
-        gap: 0.5rem;
-        background: rgba(0,0,0,0.4);
-        padding: 0.4rem;
+      .menu-content {
+        padding: clamp(1.25rem, 4vw, 2rem);
       }
-      
-      .collectibles-container {
-        gap: 1rem;
-      }
-      
-      #scoreDisplay { font-size: 1.2rem; }
-      #highScoreDisplay, #allTimeHighScoreDisplay { font-size: 0.8rem; }
-      #pipeScoreDisplay, #coinScoreDisplay { font-size: 1rem; }
       
       #featurePanel {
-        bottom: 0.5rem;
-        right: 0.5rem;
-        gap: 0.3rem;
-      }
-      
-      #featurePanel button {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.8rem;
+        max-width: 100%;
+        left: clamp(0.75rem, 2vw, 1.5rem);
+        right: clamp(0.75rem, 2vw, 1.5rem);
       }
     }
     
-    /* Extra small screens */
     @media (max-width: 360px) {
       .score-panel {
-        padding: 0.3rem;
+        padding: clamp(0.5rem, 1.5vw, 0.75rem);
       }
       
       .collectibles-container {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-      
-      #featurePanel {
-        gap: 0.2rem;
+        gap: clamp(0.3rem, 1vw, 0.5rem);
       }
       
       #featurePanel button {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.75rem;
+        flex: 1;
+        min-width: 0;
+      }
+    }
+    
+    /* Micro-interactions */
+    @media (hover: hover) {
+      .score-container:hover,
+      .collectible-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      }
+    }
+    
+    .score-container,
+    .collectible-item {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.15);
+        --glass-border: rgba(255, 255, 255, 0.35);
       }
     }
   </style>
@@ -202,14 +688,14 @@
   
   <div class="score-panel">
     <div class="score-container">
-      <div id="scoreDisplay" class="score-display">Score: 0</div>
+      <div id="scoreDisplay" class="score-display">0</div>
       <div id="highScoreDisplay" class="score-display">High Score: 0</div>
       <div id="allTimeHighScoreDisplay" class="score-display">All-Time Best: 0</div>
     </div>
     
     <div class="collectibles-container">
-      <div id="coinScoreDisplay" class="score-display">0</div>
-      <div id="pipeScoreDisplay" class="score-display">0</div>
+      <div id="coinScoreDisplay" class="collectible-item">0</div>
+      <div id="pipeScoreDisplay" class="collectible-item">0</div>
     </div>
   </div>
   
@@ -220,7 +706,7 @@
   
   <div id="startMenu" class="menu">
     <div class="menu-content">
-      <h1>Flippy Bird</h1>
+      <h1>Flappy Utkarsh</h1>
       <p>Click, tap, or press spacebar to flap!</p>
       <button onclick="startGame()">Start Game</button>
       <button onclick="showSettingsMenu()">Settings</button>
@@ -229,9 +715,9 @@
   
   <div id="gameOverMenu" class="menu">
     <div class="menu-content">
-      <h1>Game Over!</h1>
+      <h1>Game Over</h1>
       <p id="finalScore">Your Score: 0</p>
-      <p id="newHighScore" style="color:#ffd700;display:none;">New High Score!</p>
+      <p id="newHighScore" style="display:none;">New High Score!</p>
       <p id="newAllTimeHighScore" style="display:none;">New All-Time Record!</p>
       <button onclick="restartGame()">Play Again</button>
       <button onclick="showStartMenu()">Main Menu</button>
@@ -240,8 +726,8 @@
   
   <div id="pauseMenu" class="menu">
     <div class="menu-content">
-      <h1>Game Paused</h1>
-      <button onclick="togglePause()">Resume Game</button>
+      <h1>Paused</h1>
+      <button onclick="togglePause()">Resume</button>
       <button onclick="showStartMenu()">Main Menu</button>
     </div>
   </div>
@@ -250,44 +736,84 @@
     <div class="menu-content" id="settingsMenuContent">
       <button class="close-button" onclick="hideSettingsMenu()">×</button>
       <h1>Settings</h1>
-      <label for="birdSkinSelect">Bird Skin:</label>
-      <select id="birdSkinSelect" onchange="changeBirdSkin(this.value)">
-        <option value="bird_red.png">Default Bird</option>
-        <option value="bird_green.png">Green Bird</option>
-        <option value="bird_blue.png">Blue Bird</option>
-      </select>
-      <label for="backgroundSelect">Background Theme:</label>
-      <select id="backgroundSelect" onchange="changeBackgroundTheme(this.value)">
-        <option value="sky_background.png">Sky</option>
-        <option value="city_background.png">City</option>
-        <option value="night_background.png">Night</option>
-      </select>
-      <label for="difficultySelect">Difficulty:</label>
-      <select id="difficultySelect" onchange="changeDifficulty(this.value)">
-        <option value="normal">Normal</option>
-        <option value="easy">Easy</option>
-        <option value="hard">Hard</option>
-      </select>
-      <label for="pipeSkinSelect">Pipe Style:</label>
-      <select id="pipeSkinSelect" onchange="changePipeSkin(this.value)">
-        <option value="green">Green Pipes</option>
-        <option value="red">Red Pipes</option>
-        <option value="blue">Blue Pipes</option>
-      </select>
-      <label for="masterVolume">Master Volume:</label>
-      <input type="range" id="masterVolume" min="0" max="1" value="1" step="0.05">
-      <label for="soundEffectsVolume">Sound Effects Volume:</label>
-      <input type="range" id="soundEffectsVolume" min="0" max="1" value="0.7" step="0.05">
-      <label for="musicVolume">Music Volume:</label>
-      <input type="range" id="musicVolume" min="0" max="1" value="0.3" step="0.05">
-      <button onclick="resetAllTimeHighScore()" class="setting-button">Reset All Records</button>
-      <button onclick="hideSettingsMenu()" class="setting-button">Back</button>
+      
+      <!-- Appearance Section -->
+      <div class="settings-section">
+        <div class="settings-section-title">Appearance</div>
+        <div class="settings-group">
+          <label for="birdSkinSelect">Bird Character</label>
+          <select id="birdSkinSelect" onchange="changeBirdSkin(this.value)">
+            <option value="utkarsh.png">Utkarsh</option>
+          </select>
+        </div>
+        <div class="settings-group">
+          <label for="backgroundSelect">Background</label>
+          <select id="backgroundSelect" onchange="changeBackgroundTheme(this.value)">
+            <option value="city_background.png">City</option>
+          </select>
+        </div>
+        <div class="settings-group">
+          <label for="pipeSkinSelect">Pipe Style</label>
+          <select id="pipeSkinSelect" onchange="changePipeSkin(this.value)">
+            <option value="green">Green</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Gameplay Section -->
+      <div class="settings-section">
+        <div class="settings-section-title">Gameplay</div>
+        <div class="settings-group">
+          <label for="difficultySelect">Difficulty</label>
+          <select id="difficultySelect" onchange="changeDifficulty(this.value)">
+            <option value="easy">Easy</option>
+            <option value="normal">Normal</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Audio Section -->
+      <div class="settings-section">
+        <div class="settings-section-title">Audio</div>
+        <div class="volume-control">
+          <div class="volume-label-row">
+            <label for="masterVolume">Master Volume</label>
+            <span class="volume-value" id="masterVolumeValue">100%</span>
+          </div>
+          <input type="range" id="masterVolume" min="0" max="1" value="1" step="0.05">
+        </div>
+        <div class="volume-control">
+          <div class="volume-label-row">
+            <label for="soundEffectsVolume">Sound Effects</label>
+            <span class="volume-value" id="soundEffectsVolumeValue">70%</span>
+          </div>
+          <input type="range" id="soundEffectsVolume" min="0" max="1" value="0.7" step="0.05">
+        </div>
+        <div class="volume-control">
+          <div class="volume-label-row">
+            <label for="musicVolume">Music</label>
+            <span class="volume-value" id="musicVolumeValue">30%</span>
+          </div>
+          <input type="range" id="musicVolume" min="0" max="1" value="0.3" step="0.05">
+        </div>
+      </div>
+      
+      <!-- Actions -->
+      <div class="settings-buttons">
+        <button onclick="resetAllTimeHighScore()" class="setting-button">Reset All Records</button>
+        <button onclick="hideSettingsMenu()" class="setting-button">Close Settings</button>
+      </div>
     </div>
   </div>
   
-  <audio id="flapSound" src="flap.mp3" preload="auto"></audio>
-  <audio id="coinSound" src="coin_sound.mp3" preload="auto"></audio>
-  <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
-  <script src="script.js"></script>
+  <audio id="flapSound" preload="auto" src="assets/audio/flap.mp3"></audio>
+  <audio id="coinSound" preload="auto" src="assets/audio/coin_sound.mp3"></audio>
+  <audio id="gameOverSound" preload="auto" src="assets/audio/game_over.mp3"></audio>
+  <audio id="backgroundMusic" preload="auto" loop src="assets/audio/background_music.mp3"></audio>
+  
+ <script src="js/game.js"></script>
 </body>
 </html>
